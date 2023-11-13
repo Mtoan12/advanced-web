@@ -3,13 +3,15 @@ import { Button } from "../ui/button";
 
 const Header = () => {
   return (
-    <header className=" container sticky top-0 flex items-center justify-between py-5">
-      <h1 className="text-3xl font-bold">
-        <Link to="/">Classroom</Link>
-      </h1>
-      <Button variant="ghost">
-        <Link to="/login">Sign in</Link>
-      </Button>
+    <header className="sticky top-0 w-full border-b-[1px] bg-white py-5 shadow-sm">
+      <div className="container flex items-center justify-between ">
+        <h2 className="text-3xl font-bold">
+          <Link to="/">Classroom</Link>
+        </h2>
+        <Button variant="ghost">
+          <Link to="/login">Sign in</Link>
+        </Button>
+      </div>
     </header>
   );
 };

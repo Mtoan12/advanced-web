@@ -1,5 +1,10 @@
 const HomePage = () => {
-    return <div>HomePage</div>;
+  return (
+    <main className="h-[1200px]">
+      <div></div>
+      <div></div>
+    </main>
+  );
 };
 
 export default HomePage;
