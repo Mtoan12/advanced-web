@@ -22,7 +22,11 @@ const SignUpPage = () => {
   const form = useForm<z.infer<typeof signUpSchema>>({
     resolver: zodResolver(signUpSchema),
     defaultValues: {
-      username: "",
+      firstName: "",
+      lastName: "",
+      birthday: "1/1/2000",
+      gender: "male",
+      email: "",
       password: "",
     },
   });
@@ -41,6 +45,50 @@ const SignUpPage = () => {
       </h1>
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+          <div className="grid grid-cols-2 gap-2">
+            <FormField
+              control={form.control}
+              name="firstName"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>First name:</FormLabel>
+                  <FormControl>
+                    <Input
+                      placeholder="First name"
+                      {...field}
+                      className={cn(
+                        form.formState.errors.firstName &&
+                          "border-red-400 focus-visible:ring-red-400",
+                        "pr-8",
+                      )}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="lastName"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Last name:</FormLabel>
+                  <FormControl>
+                    <Input
+                      placeholder="Last name"
+                      {...field}
+                      className={cn(
+                        form.formState.errors.lastName &&
+                          "border-red-400 focus-visible:ring-red-400",
+                        "pr-8",
+                      )}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          </div>
           <FormField
             control={form.control}
             name="username"

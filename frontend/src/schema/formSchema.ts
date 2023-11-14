@@ -1,14 +1,25 @@
 import * as z from "zod";
 
 export const signUpSchema = z.object({
-  username: z
+  firstName: z.string().min(1, "Please enter your first name").trim(),
+  lastName: z.string().min(1, "Please enter your last name").trim(),
+  birthday: z
     .string()
-    .min(4, "Username should be 4 - 20 character long")
-    .max(20, "Username should be 4 - 20 character long")
-    .regex(
-      /^(?=.{8,20}$)(?![_.])(?!.*[_.]{2})[a-zA-Z0-9._]+(?<![_.])$/,
-      "User ís not valid",
-    )
+    .refine((val) => {
+      const date = new Date(val);
+      const now = new Date();
+      return date < now;
+    }, "Birthday must be in the past")
+    .refine((val) => {
+      const date = new Date(val);
+      const now = new Date();
+      return now.getFullYear() - date.getFullYear() >= 100;
+    }, "Please enter a valid birthday"),
+  gender: z.string(),
+  email: z
+    .string()
+    .min(1, "Please enter your email")
+    .email("Please enter a valid email")
     .trim(),
   password: z
     .string()
@@ -18,6 +29,10 @@ export const signUpSchema = z.object({
 });
 
 export const signInSchema = z.object({
-  username: z.string().min(1, "Please enter your username").trim(),
+  email: z
+    .string()
+    .min(1, "Please enter your email")
+    .email("Please enter a valid email")
+    .trim(),
   password: z.string().min(1, "Please enter your password").trim(),
 });
