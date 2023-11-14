@@ -47,7 +47,8 @@ const reducer = (state: State, action: any) => {
 };
 
 const AuthContextProvider = ({ children }: { children: React.ReactNode }) => {
-  const [state, dispatch] = useReducer(reducer, {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const [state] = useReducer(reducer, {
     user: null,
     loading: false,
     error: "",
