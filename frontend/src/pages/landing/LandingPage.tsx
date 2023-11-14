@@ -6,7 +6,7 @@ import { Link } from "react-router-dom";
 const LandingPage = () => {
   return (
     <main className="container grid grid-cols-1 gap-5 py-20 lg:grid-cols-2">
-      <div className="flex flex-col gap-10">
+      <section className="flex flex-col gap-10">
         <h1 className="flex items-center gap-2 text-3xl font-semibold text-gray-500">
           <img src={classroom} alt="logo" />
           <span>Classroom</span>
@@ -26,7 +26,7 @@ const LandingPage = () => {
         >
           <Link to="/login">Sign in to Classroom</Link>
         </Button>
-      </div>
+      </section>
       <div className="overflow-hidden">
         <img src={banner} alt="banner" className="w-full" />
       </div>
