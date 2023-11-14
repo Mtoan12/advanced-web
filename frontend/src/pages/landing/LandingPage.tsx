@@ -20,12 +20,14 @@ const LandingPage = () => {
           Workspace for Education, which empowers your institution with simple,
           safer, collaborative tools.
         </p>
-        <Button
-          variant="outline"
-          className="h-12 text-base font-semibold text-blue-500 hover:border-blue-500 hover:bg-blue-100/20 hover:text-blue-600"
-        >
-          <Link to="/login">Sign in to Classroom</Link>
-        </Button>
+        <Link to="/login" className="w-full">
+          <Button
+            variant="outline"
+            className="h-12 w-full text-base font-semibold text-blue-500 hover:border-blue-500 hover:bg-blue-100/20 hover:text-blue-600"
+          >
+            Sign in to Classroom
+          </Button>
+        </Link>
       </section>
       <div className="overflow-hidden">
         <img src={banner} alt="banner" className="w-full" />
