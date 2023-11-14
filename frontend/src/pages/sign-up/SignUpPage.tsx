@@ -202,8 +202,11 @@ const SignUpPage = () => {
             )}
           />
           <div className="flex items-center justify-between">
-            <Link to="/login">
-              <Button variant={"outline"}>Had an account</Button>
+            <Link
+              className="rounded-md border-[1px] border-gray-300 px-3 py-2 text-sm transition-all duration-150 hover:bg-blue-100/20"
+              to="/login"
+            >
+              Had an account
             </Link>
             <Button type="submit">Sign up</Button>
           </div>
