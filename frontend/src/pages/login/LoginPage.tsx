@@ -23,7 +23,7 @@ const LoginPage = () => {
   const form = useForm<z.infer<typeof signInSchema>>({
     resolver: zodResolver(signInSchema),
     defaultValues: {
-      username: "",
+      email: "",
       password: "",
     },
   });
@@ -48,16 +48,16 @@ const LoginPage = () => {
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
           <FormField
             control={form.control}
-            name="username"
+            name="email"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Username:</FormLabel>
+                <FormLabel>Email:</FormLabel>
                 <FormControl>
                   <Input
-                    placeholder="Username"
+                    placeholder="Email"
                     {...field}
                     className={cn(
-                      form.formState.errors.username &&
+                      form.formState.errors.email &&
                         "border-red-400 focus-visible:ring-red-400",
                       "pr-8",
                     )}

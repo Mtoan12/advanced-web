@@ -7,6 +7,13 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
 import { signUpSchema } from "@/schema/formSchema";
@@ -22,7 +29,11 @@ const SignUpPage = () => {
   const form = useForm<z.infer<typeof signUpSchema>>({
     resolver: zodResolver(signUpSchema),
     defaultValues: {
-      username: "",
+      firstName: "",
+      lastName: "",
+      birthday: "",
+      gender: "",
+      email: "",
       password: "",
     },
   });
@@ -41,18 +52,62 @@ const SignUpPage = () => {
       </h1>
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+          <div className="grid grid-cols-2 gap-2">
+            <FormField
+              control={form.control}
+              name="firstName"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>First name:</FormLabel>
+                  <FormControl>
+                    <Input
+                      placeholder="First name"
+                      {...field}
+                      className={cn(
+                        form.formState.errors.firstName &&
+                          "border-red-400 focus-visible:ring-red-400",
+                        "pr-8",
+                      )}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="lastName"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Last name:</FormLabel>
+                  <FormControl>
+                    <Input
+                      placeholder="Last name"
+                      {...field}
+                      className={cn(
+                        form.formState.errors.lastName &&
+                          "border-red-400 focus-visible:ring-red-400",
+                        "pr-8",
+                      )}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          </div>
           <FormField
             control={form.control}
-            name="username"
+            name="email"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Username:</FormLabel>
+                <FormLabel>Email:</FormLabel>
                 <FormControl>
                   <Input
-                    placeholder="Username"
+                    placeholder="Email"
                     {...field}
                     className={cn(
-                      form.formState.errors.username &&
+                      form.formState.errors.email &&
                         "border-red-400 focus-visible:ring-red-400",
                       "pr-8",
                     )}
@@ -62,6 +117,60 @@ const SignUpPage = () => {
               </FormItem>
             )}
           />
+          <div className="grid grid-cols-2 gap-2">
+            <FormField
+              control={form.control}
+              name="birthday"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Date of birth:</FormLabel>
+                  <FormControl>
+                    <Input
+                      placeholder="Date of birth"
+                      type="date"
+                      {...field}
+                      className={cn(
+                        form.formState.errors.birthday &&
+                          "border-red-400 focus-visible:ring-red-400",
+                        "pr-8",
+                      )}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="gender"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Gender:</FormLabel>
+                  <Select
+                    onValueChange={field.onChange}
+                    defaultValue={field.value}
+                  >
+                    <FormControl
+                      className={cn(
+                        form.formState.errors.birthday &&
+                          "border-red-400 focus-visible:ring-red-400",
+                        "pr-8",
+                      )}
+                    >
+                      <SelectTrigger>
+                        <SelectValue placeholder="Gender" />
+                      </SelectTrigger>
+                    </FormControl>
+                    <SelectContent>
+                      <SelectItem value="male">Male</SelectItem>
+                      <SelectItem value="female">Female</SelectItem>
+                    </SelectContent>
+                  </Select>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          </div>
           <FormField
             control={form.control}
             name="password"
