@@ -24,7 +24,7 @@ const SignUpPage = () => {
     defaultValues: {
       firstName: "",
       lastName: "",
-      birthday: "1/1/2000",
+      birthday: "",
       gender: "male",
       email: "",
       password: "",
@@ -91,16 +91,16 @@ const SignUpPage = () => {
           </div>
           <FormField
             control={form.control}
-            name="username"
+            name="email"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Username:</FormLabel>
+                <FormLabel>Email:</FormLabel>
                 <FormControl>
                   <Input
-                    placeholder="Username"
+                    placeholder="Email"
                     {...field}
                     className={cn(
-                      form.formState.errors.username &&
+                      form.formState.errors.email &&
                         "border-red-400 focus-visible:ring-red-400",
                       "pr-8",
                     )}
@@ -110,6 +110,51 @@ const SignUpPage = () => {
               </FormItem>
             )}
           />
+          <div className="grid grid-cols-2 gap-2">
+            <FormField
+              control={form.control}
+              name="birthday"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Date of birth:</FormLabel>
+                  <FormControl>
+                    <Input
+                      placeholder="Date of birth"
+                      type="date"
+                      {...field}
+                      className={cn(
+                        form.formState.errors.birthday &&
+                          "border-red-400 focus-visible:ring-red-400",
+                        "pr-8",
+                      )}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="lastName"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Last name:</FormLabel>
+                  <FormControl>
+                    <Input
+                      placeholder="Last name"
+                      {...field}
+                      className={cn(
+                        form.formState.errors.lastName &&
+                          "border-red-400 focus-visible:ring-red-400",
+                        "pr-8",
+                      )}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          </div>
           <FormField
             control={form.control}
             name="password"
