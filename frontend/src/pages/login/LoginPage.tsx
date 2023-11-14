@@ -98,8 +98,11 @@ const LoginPage = () => {
             )}
           />
           <div className="flex items-center justify-between">
-            <Link to="/sign-up">
-              <Button variant={"outline"}>Create account</Button>
+            <Link
+              className="rounded-md border-[1px] border-gray-300 px-3 py-2 text-sm transition-all duration-150 hover:bg-blue-100/20"
+              to="/sign-up"
+            >
+              Create account
             </Link>
             <Button type="submit">Sign in</Button>
           </div>
