@@ -12,7 +12,7 @@ export const signUpSchema = z.object({
       console.log(date.getFullYear());
       return date < now && date.getFullYear() > 1900;
     }, "Please enter a valid birthday"),
-  gender: z.string(),
+  gender: z.string().min(1, "Please enter your gender").trim(),
   email: z
     .string()
     .min(1, "Please enter your email")

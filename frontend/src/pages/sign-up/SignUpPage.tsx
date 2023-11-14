@@ -7,6 +7,13 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
 import { signUpSchema } from "@/schema/formSchema";
@@ -25,7 +32,7 @@ const SignUpPage = () => {
       firstName: "",
       lastName: "",
       birthday: "",
-      gender: "male",
+      gender: "",
       email: "",
       password: "",
     },
@@ -135,21 +142,30 @@ const SignUpPage = () => {
             />
             <FormField
               control={form.control}
-              name="lastName"
+              name="gender"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Last name:</FormLabel>
-                  <FormControl>
-                    <Input
-                      placeholder="Last name"
-                      {...field}
+                  <FormLabel>Gender:</FormLabel>
+                  <Select
+                    onValueChange={field.onChange}
+                    defaultValue={field.value}
+                  >
+                    <FormControl
                       className={cn(
-                        form.formState.errors.lastName &&
+                        form.formState.errors.birthday &&
                           "border-red-400 focus-visible:ring-red-400",
                         "pr-8",
                       )}
-                    />
-                  </FormControl>
+                    >
+                      <SelectTrigger>
+                        <SelectValue placeholder="Gender" />
+                      </SelectTrigger>
+                    </FormControl>
+                    <SelectContent>
+                      <SelectItem value="male">Male</SelectItem>
+                      <SelectItem value="female">Female</SelectItem>
+                    </SelectContent>
+                  </Select>
                   <FormMessage />
                 </FormItem>
               )}
