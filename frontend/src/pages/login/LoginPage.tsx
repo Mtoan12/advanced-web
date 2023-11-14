@@ -8,13 +8,14 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import { AuthContext } from "@/context/AuthContext";
 import { cn } from "@/lib/utils";
 import { signInSchema } from "@/schema/formSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Eye, EyeOff } from "lucide-react";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { useForm } from "react-hook-form";
-import { Link } from "react-router-dom";
+import { Link, Navigate } from "react-router-dom";
 import * as z from "zod";
 
 const LoginPage = () => {
@@ -26,6 +27,12 @@ const LoginPage = () => {
       password: "",
     },
   });
+
+  const { user } = useContext(AuthContext);
+  console.log(user);
+  if (user) {
+    return <Navigate to="/home" />;
+  }
 
   const onSubmit = (data: z.infer<typeof signInSchema>) => {
     console.log(data);

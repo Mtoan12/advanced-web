@@ -47,8 +47,7 @@ const reducer = (state: State, action: any) => {
 };
 
 const AuthContextProvider = ({ children }: { children: React.ReactNode }) => {
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const [state] = useReducer(reducer, {
+  const [state, dispatch] = useReducer(reducer, {
     user: null,
     loading: false,
     error: "",
@@ -60,6 +59,14 @@ const AuthContextProvider = ({ children }: { children: React.ReactNode }) => {
     loading,
     error,
   };
+  const testUser: User = {
+    id: 1,
+    email: "tranminhtoan1280@gmail.com",
+    name: "Toan Tran",
+    birthday: new Date("1999-12-12"),
+    gender: "male",
+  };
+  dispatch({ type: "LOGIN", payload: testUser });
   return <AuthContext.Provider value={data}>{children}</AuthContext.Provider>;
 };
 export default AuthContextProvider;

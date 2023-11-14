@@ -1,4 +1,7 @@
 type User = {
-  //   id: number;
-  username: string;
+  id: number;
+  email: string;
+  birthday: Date;
+  name: string;
+  gender: "male" | "female";
 };
