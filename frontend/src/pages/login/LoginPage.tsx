@@ -11,11 +11,14 @@ import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
 import { userSchema } from "@/schema/formSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { Eye, EyeOff } from "lucide-react";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { Link } from "react-router-dom";
 import * as z from "zod";
 
 const LoginPage = () => {
+  const [showPassword, setShowPassword] = useState(false);
   const form = useForm<z.infer<typeof userSchema>>({
     resolver: zodResolver(userSchema),
     defaultValues: {
@@ -26,6 +29,10 @@ const LoginPage = () => {
 
   const onSubmit = (data: z.infer<typeof userSchema>) => {
     console.log(data);
+  };
+
+  const toggleShowPassword = () => {
+    setShowPassword((prev: boolean) => !prev);
   };
   return (
     <main className="container flex max-w-[1024px] flex-col justify-center py-20">
@@ -45,6 +52,7 @@ const LoginPage = () => {
                     className={cn(
                       form.formState.errors.username &&
                         "border-red-400 focus-visible:ring-red-400",
+                      "pr-8",
                     )}
                   />
                 </FormControl>
@@ -59,15 +67,24 @@ const LoginPage = () => {
               <FormItem>
                 <FormLabel>Password:</FormLabel>
                 <FormControl>
-                  <Input
-                    type="password"
-                    placeholder="Password"
-                    {...field}
-                    className={cn(
-                      form.formState.errors.password &&
-                        "border-red-400 focus-visible:ring-red-400",
-                    )}
-                  />
+                  <div className="relative">
+                    <Input
+                      type={showPassword ? "text" : "password"}
+                      placeholder="Password"
+                      {...field}
+                      className={cn(
+                        form.formState.errors.password &&
+                          "border-red-400 focus-visible:ring-red-400",
+                        "pr-8",
+                      )}
+                    />
+                    <div
+                      className="absolute right-2 top-[50%] translate-y-[-50%]"
+                      onClick={toggleShowPassword}
+                    >
+                      {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+                    </div>
+                  </div>
                 </FormControl>
                 <FormMessage />
               </FormItem>
