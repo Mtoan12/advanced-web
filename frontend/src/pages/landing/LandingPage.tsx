@@ -1,6 +1,6 @@
-import { Button } from "@/components/ui/button";
 import banner from "@/assets/banner.jpg";
 import classroom from "@/assets/classroom.svg";
+import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 
 const LandingPage = () => {

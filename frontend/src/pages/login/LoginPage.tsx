@@ -9,7 +9,7 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
-import { userSchema } from "@/schema/formSchema";
+import { signInSchema } from "@/schema/formSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Eye, EyeOff } from "lucide-react";
 import { useState } from "react";
@@ -19,15 +19,15 @@ import * as z from "zod";
 
 const LoginPage = () => {
   const [showPassword, setShowPassword] = useState(false);
-  const form = useForm<z.infer<typeof userSchema>>({
-    resolver: zodResolver(userSchema),
+  const form = useForm<z.infer<typeof signInSchema>>({
+    resolver: zodResolver(signInSchema),
     defaultValues: {
       username: "",
       password: "",
     },
   });
 
-  const onSubmit = (data: z.infer<typeof userSchema>) => {
+  const onSubmit = (data: z.infer<typeof signInSchema>) => {
     console.log(data);
   };
 
@@ -36,7 +36,7 @@ const LoginPage = () => {
   };
   return (
     <main className="container flex max-w-[1024px] flex-col justify-center py-20">
-      <h1 className="mb-4 text-center text-3xl font-bold">Login</h1>
+      <h1 className="mb-4 text-center text-4xl font-bold">Login</h1>
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
           <FormField
@@ -79,7 +79,7 @@ const LoginPage = () => {
                       )}
                     />
                     <div
-                      className="absolute right-2 top-[50%] translate-y-[-50%]"
+                      className="absolute right-2 top-[50%] translate-y-[-50%] cursor-pointer hover:opacity-80"
                       onClick={toggleShowPassword}
                     >
                       {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
@@ -91,7 +91,7 @@ const LoginPage = () => {
             )}
           />
           <div className="flex items-center justify-between">
-            <Link to="/signup">
+            <Link to="/sign-up">
               <Button variant={"outline"}>Create account</Button>
             </Link>
             <Button type="submit">Sign in</Button>

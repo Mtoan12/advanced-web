@@ -17,7 +17,7 @@ const mixedPlugin = {
   },
 };
 
-const prettierConfig = {
+export const prettierConfig = {
   plugins: [
     "prettier-plugin-tailwindcss",
     "@trivago/prettier-plugin-sort-imports",
