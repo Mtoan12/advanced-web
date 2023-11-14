@@ -1,5 +1,6 @@
 import { Button } from "@/components/ui/button";
 import {
+  Form,
   FormControl,
   FormDescription,
   FormField,
@@ -11,7 +12,7 @@ import { Input } from "@/components/ui/input";
 import { userSchema } from "@/schema/formSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import { Form } from "react-router-dom";
+import { Link } from "react-router-dom";
 import * as z from "zod";
 
 const LoginPage = () => {
@@ -27,8 +28,8 @@ const LoginPage = () => {
     console.log(data);
   };
   return (
-    <main className="container flex justify-center py-10">
-      <h1>Login</h1>
+    <main className="container flex max-w-[1024px] flex-col justify-center py-20">
+      <h1 className="text-center text-3xl font-bold">Login</h1>
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
           <FormField
@@ -36,18 +37,33 @@ const LoginPage = () => {
             name="username"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Username</FormLabel>
+                <FormLabel>Username:</FormLabel>
                 <FormControl>
-                  <Input placeholder="shadcn" {...field} />
+                  <Input placeholder="Username" {...field} />
                 </FormControl>
-                <FormDescription>
-                  This is your public display name.
-                </FormDescription>
                 <FormMessage />
               </FormItem>
             )}
           />
-          <Button type="submit">Submit</Button>
+          <FormField
+            control={form.control}
+            name="password"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Password:</FormLabel>
+                <FormControl>
+                  <Input type="password" placeholder="Password" {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <div className="flex items-center justify-between">
+            <Link to="/signup">
+              <Button variant={"outline"}>Create account</Button>
+            </Link>
+            <Button type="submit">Sign in</Button>
+          </div>
         </form>
       </Form>
     </main>
