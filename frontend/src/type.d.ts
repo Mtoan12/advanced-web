@@ -2,6 +2,8 @@ type User = {
   id: number;
   email: string;
   birthday: Date;
-  name: string;
+  first_name: string;
+  last_name: string;
+  password: string;
   gender: "male" | "female";
 };

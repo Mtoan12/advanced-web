@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { Button } from "../ui/button";
+import RightSideHeader from "./RightSideHeader";
 
 const Header = () => {
   return (
@@ -8,9 +8,7 @@ const Header = () => {
         <h2 className="text-3xl font-bold">
           <Link to="/">Classroom</Link>
         </h2>
-        <Button variant="ghost">
-          <Link to="/login">Sign in</Link>
-        </Button>
+        <RightSideHeader />
       </div>
     </header>
   );
