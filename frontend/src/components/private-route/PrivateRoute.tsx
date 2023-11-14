@@ -1,5 +1,4 @@
-import { AuthContext } from "@/context/AuthContext";
-import { useContext } from "react";
+import { useAuth } from "@/hooks/useAuth";
 import { Navigate } from "react-router-dom";
 
 type Props = {
@@ -8,7 +7,7 @@ type Props = {
 };
 
 const PrivateRoute = ({ redirectPath = "/landing", children }: Props) => {
-  const { user } = useContext(AuthContext);
+  const { user } = useAuth();
 
   if (!user) {
     return <Navigate to={redirectPath} />;

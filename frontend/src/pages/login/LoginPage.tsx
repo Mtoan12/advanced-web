@@ -8,12 +8,12 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { AuthContext } from "@/context/AuthContext";
+import { useAuth } from "@/hooks/useAuth";
 import { cn } from "@/lib/utils";
 import { signInSchema } from "@/schema/formSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Eye, EyeOff } from "lucide-react";
-import { useContext, useState } from "react";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { Link, Navigate } from "react-router-dom";
 import * as z from "zod";
@@ -28,14 +28,14 @@ const LoginPage = () => {
     },
   });
 
-  const { user } = useContext(AuthContext);
-  console.log(user);
+  const { user, error, login } = useAuth();
   if (user) {
-    return <Navigate to="/home" />;
+    return <Navigate to="/" />;
   }
 
   const onSubmit = (data: z.infer<typeof signInSchema>) => {
     console.log(data);
+    login(data.email, data.password);
   };
 
   const toggleShowPassword = () => {
@@ -97,6 +97,7 @@ const LoginPage = () => {
               </FormItem>
             )}
           />
+          {error && <div className="text-red-500">{error}</div>}
           <div className="flex items-center justify-between">
             <Link
               className="rounded-md border-[1px] border-gray-300 px-3 py-2 text-sm transition-all duration-150 hover:bg-blue-100/20"

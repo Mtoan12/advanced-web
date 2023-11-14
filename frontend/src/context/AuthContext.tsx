@@ -1,72 +1,74 @@
-import { createContext, useReducer } from "react";
+/* eslint-disable @typescript-eslint/no-unused-vars */
+import { createContext, useState } from "react";
 
-export const AuthContext = createContext({
-  user: null,
-  loading: false,
-  error: "",
-});
+const testUsers: User[] = [
+  {
+    id: 1,
+    email: "tranminhtoan1280@gmail.com",
+    first_name: "Toan",
+    last_name: "Tran",
+    birthday: new Date("1999-12-12"),
+    gender: "male",
+    password: "123456",
+  },
+  {
+    id: 2,
+    email: "tranminhtoan1281@gmail.com",
+    first_name: "Toan",
+    last_name: "Tran2",
+    birthday: new Date("1999-12-12"),
+    gender: "male",
+    password: "123456",
+  },
+];
 
-type State = {
+type AuthContextType = {
   user: User | null;
   loading: boolean;
   error: string;
+  login: (email: string, password: string) => void;
 };
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-const reducer = (state: State, action: any) => {
-  switch (action.type) {
-    case "LOGIN":
-      return {
-        ...state,
-        user: action.payload,
-        loading: false,
-        error: "",
-      };
-    case "LOGOUT":
-      return {
-        ...state,
-        user: null,
-        loading: false,
-        error: "",
-      };
-    case "LOADING":
-      return {
-        ...state,
-        loading: true,
-        error: "",
-      };
-    case "ERROR":
-      return {
-        ...state,
-        loading: false,
-        error: action.payload,
-      };
-    default:
-      return state;
-  }
-};
+export const AuthContext = createContext<AuthContextType | null>(null);
 
 const AuthContextProvider = ({ children }: { children: React.ReactNode }) => {
-  const [state, dispatch] = useReducer(reducer, {
-    user: null,
-    loading: false,
-    error: "",
+  const [user, setUser] = useState<User | null>({
+    id: 1,
+    email: "tranminhtoan1280@gmail.com",
+    first_name: "Toan",
+    last_name: "Tran",
+    birthday: new Date("1999-12-12"),
+    gender: "male",
+    password: "123456",
   });
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
 
-  const { user, loading, error } = state;
+  const login = (email: string, password: string) => {
+    setLoading(true);
+    const user = testUsers.find((user) => user.email === email);
+
+    if (!user) {
+      setError("User not found");
+      setLoading(false);
+      return;
+    }
+
+    if (user.email === email && user.password === password) {
+      setUser(user);
+      console.log("Login success", user);
+      setLoading(false);
+      return;
+    }
+  };
+
   const data = {
     user,
     loading,
     error,
+    login,
   };
-  const testUser: User = {
-    id: 1,
-    email: "tranminhtoan1280@gmail.com",
-    name: "Toan Tran",
-    birthday: new Date("1999-12-12"),
-    gender: "male",
-  };
-  dispatch({ type: "LOGIN", payload: testUser });
+
   return <AuthContext.Provider value={data}>{children}</AuthContext.Provider>;
 };
 export default AuthContextProvider;
