@@ -21,8 +21,9 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Eye, EyeOff } from "lucide-react";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
-import { Link } from "react-router-dom";
+import { Link, Navigate } from "react-router-dom";
 import * as z from "zod";
+import { useAuth } from "@/hooks/useAuth";
 
 const SignUpPage = () => {
   const [showPassword, setShowPassword] = useState(false);
@@ -37,6 +38,11 @@ const SignUpPage = () => {
       password: "",
     },
   });
+
+  const { user } = useAuth();
+  if (user) {
+    <Navigate to={"/"} />;
+  }
 
   const onSubmit = (data: z.infer<typeof signUpSchema>) => {
     console.log(data);

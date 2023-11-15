@@ -10,6 +10,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { useAuth } from "@/hooks/useAuth";
 import { Link } from "react-router-dom";
 import { Button } from "../ui/button";
+import { LogOut, User } from "lucide-react";
 
 const RightSideHeader = () => {
   const { user } = useAuth();
@@ -23,7 +24,7 @@ const RightSideHeader = () => {
   }
 
   return (
-    <NavigationMenu>
+    <NavigationMenu className="w-max">
       <NavigationMenuList>
         <NavigationMenuItem>
           <NavigationMenuTrigger>
@@ -45,8 +46,35 @@ const RightSideHeader = () => {
               </Avatar>
             </div>
           </NavigationMenuTrigger>
-          <NavigationMenuContent>
-            <NavigationMenuLink>Link</NavigationMenuLink>
+          <NavigationMenuContent className="min-w-[240px] px-4 py-5">
+            <ul className="flex flex-col justify-evenly gap-5">
+              <li className="">
+                <NavigationMenuLink>
+                  <Link to="/profile" className="w-full">
+                    <Button
+                      variant="link"
+                      size={"lg"}
+                      className="grid w-full grid-cols-2 gap-4"
+                    >
+                      <User size={20} className="ml-8" />
+                      <span className="mr-auto">Profile</span>
+                    </Button>
+                  </Link>
+                </NavigationMenuLink>
+              </li>
+              <li>
+                <NavigationMenuLink>
+                  <Button
+                    variant="link"
+                    size={"lg"}
+                    className="grid w-full grid-cols-2 gap-4 "
+                  >
+                    <LogOut size={20} className="ml-8" />
+                    <span className="mr-auto">Log out</span>
+                  </Button>
+                </NavigationMenuLink>
+              </li>
+            </ul>
           </NavigationMenuContent>
         </NavigationMenuItem>
       </NavigationMenuList>
