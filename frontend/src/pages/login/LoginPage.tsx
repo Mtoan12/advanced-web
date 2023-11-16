@@ -8,13 +8,14 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import { useAuth } from "@/hooks/useAuth";
 import { cn } from "@/lib/utils";
 import { signInSchema } from "@/schema/formSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Eye, EyeOff } from "lucide-react";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
-import { Link } from "react-router-dom";
+import { Link, Navigate } from "react-router-dom";
 import * as z from "zod";
 
 const LoginPage = () => {
@@ -22,13 +23,19 @@ const LoginPage = () => {
   const form = useForm<z.infer<typeof signInSchema>>({
     resolver: zodResolver(signInSchema),
     defaultValues: {
-      username: "",
+      email: "",
       password: "",
     },
   });
 
+  const { user, error, login } = useAuth();
+  if (user) {
+    return <Navigate to="/" />;
+  }
+
   const onSubmit = (data: z.infer<typeof signInSchema>) => {
     console.log(data);
+    login(data.email, data.password);
   };
 
   const toggleShowPassword = () => {
@@ -41,16 +48,16 @@ const LoginPage = () => {
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
           <FormField
             control={form.control}
-            name="username"
+            name="email"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Username:</FormLabel>
+                <FormLabel>Email:</FormLabel>
                 <FormControl>
                   <Input
-                    placeholder="Username"
+                    placeholder="Email"
                     {...field}
                     className={cn(
-                      form.formState.errors.username &&
+                      form.formState.errors.email &&
                         "border-red-400 focus-visible:ring-red-400",
                       "pr-8",
                     )}
@@ -90,9 +97,13 @@ const LoginPage = () => {
               </FormItem>
             )}
           />
+          {error && <div className="text-red-500">{error}</div>}
           <div className="flex items-center justify-between">
-            <Link to="/sign-up">
-              <Button variant={"outline"}>Create account</Button>
+            <Link
+              className="rounded-md border-[1px] border-gray-300 px-3 py-2 text-sm transition-all duration-150 hover:bg-blue-100/20"
+              to="/sign-up"
+            >
+              Create account
             </Link>
             <Button type="submit">Sign in</Button>
           </div>
