@@ -6,6 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.Where;
 
 import java.util.List;
 
@@ -13,7 +14,9 @@ import java.util.List;
 @AllArgsConstructor
 @Builder
 @NoArgsConstructor
+@Entity
 @Table(name = "roles")
+@Where(clause = "revoked = false")
 public class Role {
 
     @Id
@@ -23,6 +26,9 @@ public class Role {
 
     @Column(name = "role_name")
     private String name;
+
+    @Column(name = "revoked")
+    private boolean revoked;
 
     @OneToMany(mappedBy = "role")
     @JsonIgnore
