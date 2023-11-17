@@ -6,10 +6,12 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
+import lombok.NoArgsConstructor;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.stereotype.Service;
 
 import java.security.Key;
 import java.util.Date;
@@ -19,16 +21,17 @@ import java.util.function.Function;
 
 
 @RequiredArgsConstructor
+@Service
 public class TokenServiceImpl implements ITokenService{
 
     @Value("${application.security.jwt.secret-key}")
-    private final String secretKey;
+    private String secretKey;
 
     @Value("${application.security.jwt.expiration}")
-    private final long jwtExpiration;
+    private long jwtExpiration;
 
     @Value("${application.security.jwt.refresh-token.expiration}")
-    private final long refreshExpiration;
+    private long refreshExpiration;
 
     @Override
     public Long extractUserId(String jwt) {

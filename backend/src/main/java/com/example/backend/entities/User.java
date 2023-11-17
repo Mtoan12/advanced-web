@@ -46,6 +46,8 @@ public class User implements UserDetails {
      @Column(name = "date_of_birth")
      private Date DOB;
 
+     private boolean revoked;
+
      @ManyToOne(fetch = FetchType.LAZY)
      @JoinColumn(name = "role_id")
      private Role role;
@@ -63,21 +65,21 @@ public class User implements UserDetails {
 
     @Override
     public boolean isAccountNonExpired() {
-        return false;
+        return true;
     }
 
     @Override
     public boolean isAccountNonLocked() {
-        return false;
+        return true;
     }
 
     @Override
     public boolean isCredentialsNonExpired() {
-        return false;
+        return true;
     }
 
     @Override
     public boolean isEnabled() {
-        return false;
+        return true;
     }
 }

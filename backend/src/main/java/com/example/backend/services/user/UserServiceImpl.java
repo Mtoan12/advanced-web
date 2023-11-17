@@ -19,15 +19,19 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.WebAuthenticationDetails;
+import org.springframework.stereotype.Service;
 
 @RequiredArgsConstructor
+@Service
 public class UserServiceImpl implements IUserService {
 
     private final AuthenticationManager authenticationManager;
     private final UserRepository userRepository;
     private final RoleRepository roleRepository;
     private final ITokenService tokenService;
+    private final PasswordEncoder passwordEncoder;
 
     @Override
     public AuthenticationResponseDTO login(@NonNull LoginDTO loginDTO) {
@@ -41,7 +45,7 @@ public class UserServiceImpl implements IUserService {
             );
 
         } catch (Exception e) {
-            throw  new AuthenticationErrorException("Username or Password is incorrect");
+            throw  new AuthenticationErrorException(e.getMessage() + " - Username or Password is incorrect");
         }
 
         User user = userRepository.findByEmail(loginDTO.getEmail()).orElseThrow(
@@ -69,7 +73,7 @@ public class UserServiceImpl implements IUserService {
 
             User user = User.builder()
                     .email(newUserDTO.getEmail())
-                    .password(newUserDTO.getPassword())
+                    .password(passwordEncoder.encode(newUserDTO.getPassword()))
                     .role(role)
                     .firstName(newUserDTO.getFirstName())
                     .lastName(newUserDTO.getLastName())

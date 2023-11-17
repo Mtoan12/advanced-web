@@ -32,15 +32,18 @@ public class JWTFilter extends OncePerRequestFilter {
                                     @NonNull HttpServletResponse response,
                                     @NonNull FilterChain filterChain) throws ServletException, IOException {
 
+        if (request.getRequestURI().equals(AppConstant.AUTHENTICATION_PATH)) {
+            filterChain.doFilter(request, response);
+            return;
+        }
         try {
 
-            if (request.getRequestURI().equals(AppConstant.AUTHENTICATION_PATH)) {
-                filterChain.doFilter(request, response);
-            }
+
 
             String authHeader = request.getHeader(HttpHeaders.AUTHORIZATION);
             if (authHeader == null || !authHeader.startsWith(AppConstant.TOKEN_PREFIX)) {
                 filterChain.doFilter(request, response);
+                return;
             }
             String token = authHeader.substring(AppConstant.TOKEN_PREFIX.length());
             Long userID = tokenService.extractUserId(token);
@@ -62,7 +65,7 @@ public class JWTFilter extends OncePerRequestFilter {
             }
             filterChain.doFilter(request, response);
         } catch (Exception e) {
-            throw new AuthenticationErrorException("Invalid token");
+            throw new AuthenticationErrorException(e.getMessage());
         }
     }
 }
