@@ -12,7 +12,7 @@ import java.util.function.Function;
 @Service
 public interface ITokenService {
 
-    Long extractUserID(String jwt);
+    Long extractUserId(String jwt);
 
     <T> T extractClaim(String token, Function<Claims, T> claimResolver);
 

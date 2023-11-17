@@ -31,7 +31,7 @@ public class TokenServiceImpl implements ITokenService{
     private final long refreshExpiration;
 
     @Override
-    public Long extractUserID(String jwt) {
+    public Long extractUserId(String jwt) {
         return Long.valueOf(extractClaim(jwt, Claims::getSubject));
     }
 
@@ -45,7 +45,7 @@ public class TokenServiceImpl implements ITokenService{
     public boolean isValidToken(@NonNull String token, @NonNull UserDetails userDetails) {
 
         User user = (User) userDetails;
-        return (extractUserID(token).equals(user.getId()) && !isExpiredToken(token));
+        return (extractUserId(token).equals(user.getId()) && !isExpiredToken(token));
 
     }
 

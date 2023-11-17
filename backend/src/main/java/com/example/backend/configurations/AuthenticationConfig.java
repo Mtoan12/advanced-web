@@ -23,8 +23,8 @@ public class AuthenticationConfig {
     public UserDetailsService userDetailsService() {
         return new UserDetailsService() {
             @Override
-            public UserDetails loadUserByUsername(String username) {
-                return userRepository.findByUsername(username).orElse(null);
+            public UserDetails loadUserByUsername(String email) {
+                return userRepository.findByEmail(email).orElse(null);
             }
         };
     }
