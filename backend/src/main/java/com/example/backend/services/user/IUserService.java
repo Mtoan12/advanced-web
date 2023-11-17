@@ -19,4 +19,6 @@ public interface IUserService {
                                            @NonNull HttpServletResponse response);
 
     UserDTO getProfile(@NonNull Long id);
+
+    UserDTO updateProfile(@NonNull UserDTO userDTO);
 }

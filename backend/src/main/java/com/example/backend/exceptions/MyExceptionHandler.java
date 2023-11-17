@@ -2,10 +2,18 @@ package com.example.backend.exceptions;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.security.access.AccessDeniedException;
+import org.springframework.validation.FieldError;
+
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+
+import java.util.HashMap;
+import java.util.Map;
 
 @RestControllerAdvice
 public class MyExceptionHandler {
@@ -25,6 +33,13 @@ public class MyExceptionHandler {
     @ExceptionHandler(AccessDeniedException.class)
     @ResponseStatus(code = HttpStatus.FORBIDDEN)
     public ResponseEntity<String> resolveException(AccessDeniedException exception) {
-        return new ResponseEntity<>("Your role is invalid", HttpStatus.FORBIDDEN);
+        return new ResponseEntity<>("You are not authorized", HttpStatus.FORBIDDEN);
+    }
+
+    @ExceptionHandler({HttpMessageNotReadableException.class})
+    @ResponseStatus(code = HttpStatus.BAD_REQUEST)
+    public ResponseEntity<String> resolveException(HttpMessageNotReadableException exception) {
+        String errorMessage = "Malformed JSON request. Please check the request body.";
+        return new ResponseEntity<>(errorMessage, HttpStatus.BAD_REQUEST);
     }
 }

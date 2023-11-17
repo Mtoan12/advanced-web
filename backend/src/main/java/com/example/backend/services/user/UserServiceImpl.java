@@ -134,4 +134,20 @@ public class UserServiceImpl implements IUserService {
 
 
     }
+
+    @Override
+    public UserDTO updateProfile(@NonNull UserDTO userDTO) {
+
+        User user = userRepository.findById(userDTO.getId()).orElseThrow(
+                () -> new NotFoundException("User not found")
+        );
+        user.setEmail(userDTO.getEmail());
+        user.setFirstName(userDTO.getFirstName());
+        user.setLastName(userDTO.getLastName());
+        user.setGender(userDTO.getGender().name());
+        user.setDOB(userDTO.getDOB());
+        userRepository.save(user);
+
+        return userDTO;
+    }
 }

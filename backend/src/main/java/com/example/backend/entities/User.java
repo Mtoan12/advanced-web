@@ -48,7 +48,7 @@ public class User implements UserDetails {
 
      private boolean revoked;
 
-     @ManyToOne(fetch = FetchType.LAZY)
+     @ManyToOne()
      @JoinColumn(name = "role_id")
      private Role role;
 

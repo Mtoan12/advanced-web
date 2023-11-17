@@ -1,5 +1,6 @@
 package com.example.backend.configurations.converter;
 
+import com.example.backend.constants.GenderEnum;
 import com.example.backend.dtos.UserDTO;
 import com.example.backend.entities.User;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -13,7 +14,7 @@ public class UserMapper implements Mapper<User, UserDTO>{
                 .email(obj.getEmail())
                 .firstName(obj.getFirstName())
                 .lastName(obj.getLastName())
-                .gender(obj.getGender())
+                .gender(obj.getGender().name())
                 .DOB(obj.getDOB())
                 .build();
     }
@@ -25,7 +26,7 @@ public class UserMapper implements Mapper<User, UserDTO>{
                 .email(obj.getEmail())
                 .firstName(obj.getFirstName())
                 .lastName(obj.getLastName())
-                .gender(obj.getGender())
+                .gender(GenderEnum.valueOf(obj.getGender()))
                 .DOB(obj.getDOB())
                 .build();
     }
