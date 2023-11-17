@@ -35,6 +35,7 @@ public class SecurityConfig {
     List<RequestMatcher> permitAllMatchers = new ArrayList<>();
 
     permitAllMatchers.add(new AntPathRequestMatcher(AppConstant.AUTHENTICATION_PATH));
+    permitAllMatchers.add(new AntPathRequestMatcher(AppConstant.USER_PATH));
 
     return permitAllMatchers;
 }

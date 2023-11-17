@@ -1,9 +1,11 @@
 package com.example.backend.services.user;
 
+import com.example.backend.configurations.converter.Mapper;
 import com.example.backend.constants.AppConstant;
 import com.example.backend.dtos.AuthenticationResponseDTO;
 import com.example.backend.dtos.LoginDTO;
 import com.example.backend.dtos.RegisterDTO;
+import com.example.backend.dtos.UserDTO;
 import com.example.backend.entities.Role;
 import com.example.backend.entities.User;
 import com.example.backend.exceptions.AuthenticationErrorException;
@@ -15,6 +17,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpHeaders;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -32,6 +35,8 @@ public class UserServiceImpl implements IUserService {
     private final RoleRepository roleRepository;
     private final ITokenService tokenService;
     private final PasswordEncoder passwordEncoder;
+
+    private final Mapper<User, UserDTO> userMapper;
 
     @Override
     public AuthenticationResponseDTO login(@NonNull LoginDTO loginDTO) {
@@ -116,5 +121,17 @@ public class UserServiceImpl implements IUserService {
             }
         }
         throw new AuthenticationErrorException("Invalid token");
+    }
+
+    @Override
+    public UserDTO getProfile(@NonNull Long id) {
+
+        User user = userRepository.findById(id).orElseThrow(
+                () -> new NotFoundException("User not found")
+        );
+
+        return userMapper.toDTO(user);
+
+
     }
 }

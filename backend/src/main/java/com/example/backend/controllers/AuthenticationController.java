@@ -8,6 +8,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -18,19 +19,18 @@ public class AuthenticationController {
     private final IUserService userService;
 
     @PostMapping("/register")
-    public AuthenticationResponseDTO register(@RequestBody RegisterDTO newUserDTO) {
-        return userService.register(newUserDTO);
+    public ResponseEntity<AuthenticationResponseDTO> register(@RequestBody RegisterDTO newUserDTO) {
+        return ResponseEntity.ok(userService.register(newUserDTO));
     }
 
     @PostMapping("/login")
-    public AuthenticationResponseDTO login(@RequestBody LoginDTO loginDTO) {
-        System.out.println(loginDTO.getEmail());
-        return userService.login(loginDTO);
+    public ResponseEntity<AuthenticationResponseDTO> login(@RequestBody LoginDTO loginDTO) {
+        return ResponseEntity.ok(userService.login(loginDTO));
     }
 
     @GetMapping("/refresh-token")
-    public AuthenticationResponseDTO refreshToken(HttpServletRequest request,
+    public ResponseEntity<AuthenticationResponseDTO> refreshToken(HttpServletRequest request,
                                                   HttpServletResponse response) {
-        return userService.refreshToken(request, response);
+        return ResponseEntity.ok(userService.refreshToken(request, response));
     }
 }
