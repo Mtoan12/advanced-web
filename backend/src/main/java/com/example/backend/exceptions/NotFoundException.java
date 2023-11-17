@@ -9,7 +9,7 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class UserNotFoundException extends RuntimeException {
+public class NotFoundException extends RuntimeException {
 
     private String message;
 }

@@ -7,6 +7,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
-public class WrongAuthenticatuionException extends RuntimeException {
+public class AuthenticationErrorException extends RuntimeException {
     private String message;
 }

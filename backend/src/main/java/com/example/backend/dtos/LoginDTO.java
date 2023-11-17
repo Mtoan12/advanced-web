@@ -5,7 +5,6 @@ import lombok.Builder;
 import lombok.Getter;
 
 @AllArgsConstructor
-@Builder
 @Getter
 public class LoginDTO {
 
