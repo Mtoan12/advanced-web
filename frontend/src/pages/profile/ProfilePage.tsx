@@ -26,7 +26,6 @@ import * as z from "zod";
 import { useAuth } from "@/hooks/useAuth";
 
 const ProfilePage = () => {
-  const [showPassword, setShowPassword] = useState(false);
   const [isEditMode, setIsEditMode] = useState(false);
   const form = useForm<z.infer<typeof signUpSchema>>({
     resolver: zodResolver(signUpSchema),
@@ -53,9 +52,10 @@ const ProfilePage = () => {
     setIsEditMode(true);
   };
 
-  const toggleShowPassword = () => {
-    setShowPassword((prev: boolean) => !prev);
+  const saveProfile = () => {
+    setIsEditMode(false);
   };
+
   return (
     <main className="container flex max-w-[1024px] flex-col justify-center py-20">
       <h1 className="mb-4 text-center text-4xl font-bold">Account Setting</h1>
@@ -68,17 +68,24 @@ const ProfilePage = () => {
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>First name:</FormLabel>
-                  <FormControl>
-                    <Input
-                      placeholder="First name"
-                      {...field}
-                      className={cn(
-                        form.formState.errors.firstName &&
-                          "border-red-400 focus-visible:ring-red-400",
-                        "pr-8",
-                      )}
-                    />
-                  </FormControl>
+                  {isEditMode ? (
+                    <FormControl>
+                      <Input
+                        placeholder="Tran"
+                        {...field}
+                        className={cn(
+                          form.formState.errors.firstName &&
+                            "border-red-400 focus-visible:ring-red-400",
+                          "pr-8",
+                        )}
+                        readOnly={!isEditMode}
+                      />
+                    </FormControl>
+                  ) : (
+                    <div className="rounded-md border border-gray-300 p-2">
+                      Tran
+                    </div>
+                  )}
                   <FormMessage />
                 </FormItem>
               )}
@@ -89,43 +96,31 @@ const ProfilePage = () => {
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Last name:</FormLabel>
-                  <FormControl>
-                    <Input
-                      placeholder="Last name"
-                      {...field}
-                      className={cn(
-                        form.formState.errors.lastName &&
-                          "border-red-400 focus-visible:ring-red-400",
-                        "pr-8",
-                      )}
-                    />
-                  </FormControl>
+                  {isEditMode ? (
+                    <FormControl>
+                      <Input
+                        placeholder="Last name"
+                        {...field}
+                        className={cn(
+                          form.formState.errors.lastName &&
+                            "border-red-400 focus-visible:ring-red-400",
+                          "pr-8",
+                        )}
+                        readOnly={!isEditMode}
+                      />
+                    </FormControl>
+                  ) : (
+                    <div className="rounded-md border border-gray-300 p-2">
+                      Toan
+                    </div>
+                  )}
+
                   <FormMessage />
                 </FormItem>
               )}
             />
           </div>
-          <FormField
-            control={form.control}
-            name="email"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Email:</FormLabel>
-                <FormControl>
-                  <Input
-                    placeholder="Email"
-                    {...field}
-                    className={cn(
-                      form.formState.errors.email &&
-                        "border-red-400 focus-visible:ring-red-400",
-                      "pr-8",
-                    )}
-                  />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
+
           <div className="grid grid-cols-2 gap-2">
             <FormField
               control={form.control}
@@ -133,18 +128,25 @@ const ProfilePage = () => {
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Date of birth:</FormLabel>
-                  <FormControl>
-                    <Input
-                      placeholder="Date of birth"
-                      type="date"
-                      {...field}
-                      className={cn(
-                        form.formState.errors.birthday &&
-                          "border-red-400 focus-visible:ring-red-400",
-                        "pr-8",
-                      )}
-                    />
-                  </FormControl>
+                  {isEditMode ? (
+                    <FormControl>
+                      <Input
+                        placeholder="Date of birth"
+                        type="date"
+                        {...field}
+                        className={cn(
+                          form.formState.errors.birthday &&
+                            "border-red-400 focus-visible:ring-red-400",
+                          "pr-8",
+                        )}
+                      />
+                    </FormControl>
+                  ) : (
+                    <div className="rounded-md border border-gray-300 p-2">
+                      07/13/2002
+                    </div>
+                  )}
+
                   <FormMessage />
                 </FormItem>
               )}
@@ -155,64 +157,45 @@ const ProfilePage = () => {
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Gender:</FormLabel>
-                  <Select
-                    onValueChange={field.onChange}
-                    defaultValue={field.value}
-                  >
-                    <FormControl
-                      className={cn(
-                        form.formState.errors.birthday &&
-                          "border-red-400 focus-visible:ring-red-400",
-                        "pr-8",
-                      )}
+
+                  {isEditMode ? (
+                    <Select
+                      onValueChange={field.onChange}
+                      defaultValue={field.value}
                     >
-                      <SelectTrigger>
-                        <SelectValue placeholder="Gender" />
-                      </SelectTrigger>
-                    </FormControl>
-                    <SelectContent>
-                      <SelectItem value="male">Male</SelectItem>
-                      <SelectItem value="female">Female</SelectItem>
-                    </SelectContent>
-                  </Select>
+                      <FormControl
+                        className={cn(
+                          form.formState.errors.birthday &&
+                            "border-red-400 focus-visible:ring-red-400",
+                          "pr-8",
+                        )}
+                      >
+                        <SelectTrigger>
+                          <SelectValue placeholder="Male" />
+                        </SelectTrigger>
+                      </FormControl>
+                      <SelectContent>
+                        <SelectItem value="male">Male</SelectItem>
+                        <SelectItem value="female">Female</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  ) : (
+                    <div className="rounded-md border border-gray-300 p-2">
+                      Male
+                    </div>
+                  )}
+
                   <FormMessage />
                 </FormItem>
               )}
             />
           </div>
-          <FormField
-            control={form.control}
-            name="password"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Password:</FormLabel>
-                <FormControl>
-                  <div className="relative">
-                    <Input
-                      type={showPassword ? "text" : "password"}
-                      placeholder="Password"
-                      {...field}
-                      className={cn(
-                        form.formState.errors.password &&
-                          "border-red-400 focus-visible:ring-red-400",
-                        "pr-8",
-                      )}
-                    />
-                    <div
-                      className="absolute right-2 top-[50%] translate-y-[-50%] cursor-pointer hover:opacity-80"
-                      onClick={toggleShowPassword}
-                    >
-                      <Edit size={18} />
-                    </div>
-                  </div>
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
+
           <div className="flex items-center justify-between">
             <Button onClick={setEditMode}>Edit</Button>
-            <Button type="submit">Save</Button>
+            <Button type="submit" onClick={saveProfile}>
+              Save
+            </Button>
           </div>
         </form>
       </Form>
