@@ -2,6 +2,7 @@ package com.example.backend.services.user;
 
 import com.example.backend.configurations.converter.Mapper;
 import com.example.backend.constants.AppConstant;
+import com.example.backend.constants.GenderEnum;
 import com.example.backend.dtos.AuthenticationResponseDTO;
 import com.example.backend.dtos.LoginDTO;
 import com.example.backend.dtos.RegisterDTO;
@@ -81,6 +82,8 @@ public class UserServiceImpl implements IUserService {
                 () -> new NotFoundException("Role not found")
         );
 
+
+
         try {
 
 
@@ -90,7 +93,7 @@ public class UserServiceImpl implements IUserService {
                     .role(role)
                     .firstName(newUserDTO.getFirstName())
                     .lastName(newUserDTO.getLastName())
-                    .gender(newUserDTO.getGender())
+                    .gender(newUserDTO.getGender() == null ? GenderEnum.UNKNOWN.name() : newUserDTO.getGender().name())
                     .DOB(newUserDTO.getDOB())
                     .build();
 
