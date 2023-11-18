@@ -21,7 +21,6 @@ public class UserController {
     }
 
     @PutMapping("")
-    @PreAuthorize("isAuthenticated()")
     public ResponseEntity<UserDTO> updateProfile(@RequestBody UserDTO userDTO) {
         return ResponseEntity.ok(userService.updateProfile(userDTO));
     }

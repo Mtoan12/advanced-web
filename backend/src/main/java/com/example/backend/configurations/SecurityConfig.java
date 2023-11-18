@@ -35,7 +35,7 @@ public class SecurityConfig {
     List<RequestMatcher> permitAllMatchers = new ArrayList<>();
 
     permitAllMatchers.add(new AntPathRequestMatcher(AppConstant.AUTHENTICATION_PATH));
-    permitAllMatchers.add(new AntPathRequestMatcher(AppConstant.USER_PATH));
+//    permitAllMatchers.add(new AntPathRequestMatcher(AppConstant.USER_PATH));
 
     return permitAllMatchers;
 }
@@ -48,6 +48,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(permitAllRequestMatchers().toArray(new RequestMatcher[0])).permitAll()
                         .anyRequest().authenticated())
+                .exceptionHandling(exceptions -> exceptions.authenticationEntryPoint(unauthorizedHandler))
                 .sessionManagement(sess -> sess.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authenticationProvider(authenticationProvider)
                 .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
