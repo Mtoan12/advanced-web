@@ -6,7 +6,7 @@ USE db_classroom;
 DROP TABLE IF EXISTS roles;
 CREATE TABLE roles (
 	role_id BIGINT AUTO_INCREMENT NOT NULL,
-    role_name VARCHAR(255) NOT NULL,
+    role_name VARCHAR(255) NOT NULL UNIQUE,
     revoked BIT DEFAULT 0,
     CONSTRAINT pk_roles PRIMARY KEY(role_id)
 );
