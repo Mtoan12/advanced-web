@@ -5,6 +5,8 @@ server:
 
 
 spring:
+  profiles:
+    active: railway
   jpa:
     hibernate:
       ddl-auto: none
