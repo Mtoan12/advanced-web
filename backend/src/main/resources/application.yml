@@ -3,15 +3,8 @@ server:
   servlet:
     context-path: /api/v1
 
-database:
-  name: db_classroom
 
 spring:
-  datasource:
-    url: jdbc:mysql://${MYSQL_HOST:localhost}:3306/${database.name}
-    username: 20120232
-    password: 20120232
-    driver-class-name: com.mysql.cj.jdbc.Driver
   jpa:
     hibernate:
       ddl-auto: none
@@ -21,10 +14,12 @@ spring:
     properties:
       hibernate:
         format_sql: true
-  servlet:
-    multipart:
-      max-file-size: 20MB
-      max-request-size: 20MB
+    servlet:
+      multipart:
+        max-file-size: 20MB
+        max-request-size: 20MB
+
+
 
 application:
   security:
