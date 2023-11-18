@@ -17,6 +17,9 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.BeanUtils;
+import org.springframework.beans.BeanWrapper;
+import org.springframework.beans.BeanWrapperImpl;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpHeaders;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -25,6 +28,10 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.WebAuthenticationDetails;
 import org.springframework.stereotype.Service;
+
+import java.util.HashSet;
+import java.util.Optional;
+import java.util.Set;
 
 @RequiredArgsConstructor
 @Service
@@ -69,7 +76,8 @@ public class UserServiceImpl implements IUserService {
     @Override
     public AuthenticationResponseDTO register(@NonNull RegisterDTO newUserDTO) {
 
-        Role role = roleRepository.findByName("MEMBER").orElseThrow(
+
+        Role role = roleRepository.findByName(newUserDTO.getRole().name()).orElseThrow(
                 () -> new NotFoundException("Role not found")
         );
 
@@ -138,16 +146,41 @@ public class UserServiceImpl implements IUserService {
     @Override
     public UserDTO updateProfile(@NonNull UserDTO userDTO) {
 
-        User user = userRepository.findById(userDTO.getId()).orElseThrow(
-                () -> new NotFoundException("User not found")
-        );
-        user.setEmail(userDTO.getEmail());
-        user.setFirstName(userDTO.getFirstName());
-        user.setLastName(userDTO.getLastName());
-        user.setGender(userDTO.getGender().name());
-        user.setDOB(userDTO.getDOB());
-        userRepository.save(user);
+        Optional<User> optionalUser = userRepository.findById(userDTO.getId());
 
-        return userDTO;
+
+        return optionalUser.map(existingUser -> {
+            // Use BeanUtils to copy non-null properties from DTO to entity
+            BeanUtils.copyProperties(userDTO, existingUser, getNullPropertyNames(userDTO));
+
+            // Save the updated user
+            return userMapper.toDTO(userRepository.save(existingUser));
+        }).orElseThrow(() -> new RuntimeException("User not found"));
+
+
+
+//        user.setEmail(userDTO.getEmail() );
+//        user.setFirstName(userDTO.getFirstName());
+//        user.setLastName(userDTO.getLastName());
+//        user.setGender(userDTO.getGender().name());
+//        user.setDOB(userDTO.getDOB());
+//        userRepository.save(user);
+
+//        return userDTO;
+    }
+
+    // Helper method to get null property names from an object
+    private String[] getNullPropertyNames(Object source) {
+        final BeanWrapper src = new BeanWrapperImpl(source);
+        java.beans.PropertyDescriptor[] pds = src.getPropertyDescriptors();
+
+        Set<String> emptyNames = new HashSet<>();
+        for (java.beans.PropertyDescriptor pd : pds) {
+            Object srcValue = src.getPropertyValue(pd.getName());
+            if (srcValue == null) emptyNames.add(pd.getName());
+        }
+
+        String[] result = new String[emptyNames.size()];
+        return emptyNames.toArray(result);
     }
 }

@@ -40,7 +40,7 @@ public class User implements UserDetails {
      @Column(name = "last_name")
      private String lastName;
 
-     @Column(name = "gender")
+     @Column(name = "gender", nullable = false)
      private String gender;
 
      @Column(name = "date_of_birth")

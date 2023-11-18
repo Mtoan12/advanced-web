@@ -19,12 +19,19 @@ CREATE TABLE users (
     password VARCHAR(255) NOT NULL,
     first_name VARCHAR(255),
     last_name VARCHAR(255),
-    gender VARCHAR(10),
+    gender VARCHAR(10) NOT NULL,
     date_of_birth DATE,
     revoked BIT DEFAULT 0,
-    CONSTRAINT chk_gender CHECK(gender IN ('Male', 'Female', 'Unknow')),
+    CONSTRAINT chk_gender CHECK(gender IN ('MALE', 'FEMALE', 'UNKNOWN')),
     CONSTRAINT pk_users PRIMARY KEY (user_id),
     CONSTRAINT fk_users_roles FOREIGN KEY(role_id) REFERENCES roles(role_id)
 );
+
+
+INSERT INTO roles(role_name) VALUES
+	("MEMBER"),
+	("TEACHER");
+
+
 
 

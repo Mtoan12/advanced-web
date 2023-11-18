@@ -1,5 +1,6 @@
 package com.example.backend.dtos;
 
+import com.example.backend.constants.RoleEnum;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -23,4 +24,5 @@ public class RegisterDTO {
 
     private String gender;
     private Date DOB;
+    private RoleEnum role;
 }
