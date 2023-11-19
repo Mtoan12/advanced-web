@@ -19,7 +19,8 @@ import {
 import { cn, formatDate } from "@/lib/utils";
 import { ProfileSchema } from "@/schema/formSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
+import { useState } from "react";
+import { set, useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import * as z from "zod";
 
@@ -29,6 +30,7 @@ type Props = {
 };
 
 const ProfileForm = ({ setIsEditMode, user }: Props) => {
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
   const form = useForm<z.infer<typeof ProfileSchema>>({
@@ -42,10 +44,10 @@ const ProfileForm = ({ setIsEditMode, user }: Props) => {
   });
 
   const onSubmit = async (data: z.infer<typeof ProfileSchema>) => {
+    setLoading(true);
     console.log(data);
     try {
       const { birthday, firstName, gender, lastName } = data;
-
       const res = await profileApi.updateProfile({
         id: user.id,
         birthday: new Date(birthday),
@@ -59,6 +61,8 @@ const ProfileForm = ({ setIsEditMode, user }: Props) => {
       navigate(0);
     } catch (error) {
       console.error(error);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -174,7 +178,9 @@ const ProfileForm = ({ setIsEditMode, user }: Props) => {
         </div>
 
         <div className="flex items-center justify-between">
-          <Button type="submit">Save</Button>
+          <Button type="submit" disabled={loading}>
+            Save
+          </Button>
         </div>
       </form>
     </Form>
