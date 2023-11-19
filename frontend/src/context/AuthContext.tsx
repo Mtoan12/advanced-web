@@ -11,8 +11,6 @@ const AuthContextProvider = ({ children }: { children: React.ReactNode }) => {
   const [error, setError] = useState("");
 
   const loadUser = async () => {
-    setLoading(true);
-
     try {
       const res = await authApi.loadUser();
 
@@ -54,6 +52,8 @@ const AuthContextProvider = ({ children }: { children: React.ReactNode }) => {
     } catch (error: any) {
       setError(error.message);
       console.error(error);
+    } finally {
+      setLoading(false);
     }
   };
 

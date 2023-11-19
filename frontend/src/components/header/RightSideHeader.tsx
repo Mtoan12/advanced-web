@@ -8,13 +8,13 @@ import {
 } from "@/components/ui/navigation-menu";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { useAuth } from "@/hooks/useAuth";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Button } from "../ui/button";
 import { LogOut, User } from "lucide-react";
 
 const RightSideHeader = () => {
   const { user, logout } = useAuth();
-
+  const navigate = useNavigate();
   if (!user) {
     return (
       <Button variant="ghost">
@@ -22,6 +22,11 @@ const RightSideHeader = () => {
       </Button>
     );
   }
+
+  const handleLogOutClick = () => {
+    logout();
+    navigate("/login");
+  };
 
   return (
     <NavigationMenu className="w-max">
@@ -72,7 +77,7 @@ const RightSideHeader = () => {
                     variant="link"
                     size={"lg"}
                     className="grid w-full grid-cols-2 gap-4 "
-                    onClick={logout}
+                    onClick={handleLogOutClick}
                   >
                     <LogOut size={20} className="ml-8" />
                     <span className="mr-auto">Log out</span>
