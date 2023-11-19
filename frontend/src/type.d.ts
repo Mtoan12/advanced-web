@@ -7,3 +7,12 @@ type User = {
   password: string;
   gender: "male" | "female";
 };
+
+type SignInFields = {
+  firstName: string;
+  lastName: string;
+  dob: Date;
+  gender: 'male' | 'female';
+  email: string;
+  password: string;
+}
