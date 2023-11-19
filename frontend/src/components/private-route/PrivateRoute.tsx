@@ -6,10 +6,10 @@ type Props = {
   children: React.ReactNode;
 };
 
-const PrivateRoute = ({ redirectPath = "/landing", children }: Props) => {
-  const { user } = useAuth();
+const PrivateRoute = ({ redirectPath = "/login", children }: Props) => {
+  useAuth();
 
-  if (!user) {
+  if (!localStorage.getItem("access-token")) {
     return <Navigate to={redirectPath} />;
   }
 

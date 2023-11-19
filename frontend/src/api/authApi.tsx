@@ -2,7 +2,7 @@ import instance from "./axiosConfig";
 
 class AuthApi {
   async loadUser() {
-    const res = await instance.get("/auth/loadUser");
+    const res = await instance.get("/auth/authenticated");
 
     return res.data;
   }
@@ -19,7 +19,7 @@ class AuthApi {
     const res = await instance.post("/auth/login", {
       email,
       password,
-      dob, 
+      dob,
       gender,
       first_name: firstName,
       last_name: lastName,

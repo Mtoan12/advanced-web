@@ -15,11 +15,14 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Eye, EyeOff } from "lucide-react";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
-import { Link, Navigate } from "react-router-dom";
+import { Link, Navigate, useNavigate } from "react-router-dom";
 import * as z from "zod";
 
 const LoginPage = () => {
   const [showPassword, setShowPassword] = useState(false);
+
+  const navigate = useNavigate();
+
   const form = useForm<z.infer<typeof signInSchema>>({
     resolver: zodResolver(signInSchema),
     defaultValues: {
@@ -34,8 +37,12 @@ const LoginPage = () => {
   }
 
   const onSubmit = (data: z.infer<typeof signInSchema>) => {
-    console.log(data);
-    login(data.email, data.password);
+    try {
+      login({ email: data.email, password: data.password });
+      navigate("/");
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   const toggleShowPassword = () => {

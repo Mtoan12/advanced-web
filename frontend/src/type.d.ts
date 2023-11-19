@@ -1,18 +1,17 @@
 type User = {
   id: number;
   email: string;
-  birthday: Date;
-  first_name: string;
-  last_name: string;
-  password: string;
-  gender: "male" | "female";
+  dob: Date;
+  firstName: string;
+  lastName: string;
+  gender: "MALE" | "FEMALE";
 };
 
 type SignInFields = {
   firstName: string;
   lastName: string;
   dob: Date;
-  gender: 'male' | 'female';
+  gender: "MALE" | "FEMALE";
   email: string;
   password: string;
-}
+};
