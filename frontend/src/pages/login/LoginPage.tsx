@@ -31,7 +31,7 @@ const LoginPage = () => {
     },
   });
 
-  const { user, error, login } = useAuth();
+  const { user, error, login, loading } = useAuth();
   if (user) {
     return <Navigate to="/" />;
   }
@@ -112,7 +112,9 @@ const LoginPage = () => {
             >
               Create account
             </Link>
-            <Button type="submit">Sign in</Button>
+            <Button type="submit" disabled={loading}>
+              Sign in
+            </Button>
           </div>
         </form>
       </Form>
