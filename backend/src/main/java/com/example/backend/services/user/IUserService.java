@@ -21,4 +21,7 @@ public interface IUserService {
     UserDTO getProfile(@NonNull Long id);
 
     UserDTO updateProfile(@NonNull UserDTO userDTO);
+
+    UserDTO getAuthenticatedUser(@NonNull HttpServletRequest request,
+                                           @NonNull HttpServletResponse response);
 }
