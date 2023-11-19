@@ -42,13 +42,13 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        http.cors(AbstractHttpConfigurer::disable).csrf(AbstractHttpConfigurer::disable)
+        http.cors(cors -> cors.disable()).csrf(csrf -> csrf.disable())
 //                .exceptionHandling(exceptions -> exceptions.authenticationEntryPoint(unauthorizedHandler))
                 .httpBasic(Customizer.withDefaults())
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(permitAllRequestMatchers().toArray(new RequestMatcher[0])).permitAll()
                         .anyRequest().authenticated())
-                .exceptionHandling(exceptions -> exceptions.authenticationEntryPoint(unauthorizedHandler))
+//                .exceptionHandling(exceptions -> exceptions.authenticationEntryPoint(unauthorizedHandler))
                 .sessionManagement(sess -> sess.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authenticationProvider(authenticationProvider)
                 .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
