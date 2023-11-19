@@ -1,5 +1,6 @@
 package com.example.backend.exceptions;
 
+import com.example.backend.dtos.ErrorResponseDTO;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
@@ -20,26 +21,43 @@ public class MyExceptionHandler {
 
     @ExceptionHandler(NotFoundException.class)
     @ResponseStatus(code = HttpStatus.NOT_FOUND)
-    public ResponseEntity<String> resolveException(NotFoundException exception) {
-        return new ResponseEntity<>(exception.getMessage(), HttpStatus.NOT_FOUND);
+    public ResponseEntity<ErrorResponseDTO> resolveException(NotFoundException exception) {
+        return new ResponseEntity<>(
+                ErrorResponseDTO.builder()
+                        .error(exception.getMessage())
+                .build(),
+                HttpStatus.NOT_FOUND);
     }
 
     @ExceptionHandler(AuthenticationErrorException.class)
     @ResponseStatus(code = HttpStatus.UNAUTHORIZED)
-    public ResponseEntity<String> resolveException(AuthenticationErrorException exception) {
-        return new ResponseEntity<>(exception.getMessage(), HttpStatus.UNAUTHORIZED);
+    public ResponseEntity<ErrorResponseDTO> resolveException(AuthenticationErrorException exception) {
+        return new ResponseEntity<>(
+                ErrorResponseDTO.builder()
+                        .error(exception.getMessage())
+                        .build(),
+                HttpStatus.UNAUTHORIZED);
     }
 
     @ExceptionHandler(AccessDeniedException.class)
     @ResponseStatus(code = HttpStatus.FORBIDDEN)
-    public ResponseEntity<String> resolveException(AccessDeniedException exception) {
-        return new ResponseEntity<>("You are not authorized", HttpStatus.FORBIDDEN);
+    public ResponseEntity<ErrorResponseDTO> resolveException(AccessDeniedException exception) {
+        return new ResponseEntity<>(
+                ErrorResponseDTO.builder()
+                        .error("You are not authorized")
+                        .build(),
+
+                HttpStatus.FORBIDDEN);
     }
 
     @ExceptionHandler({HttpMessageNotReadableException.class})
     @ResponseStatus(code = HttpStatus.BAD_REQUEST)
-    public ResponseEntity<String> resolveException(HttpMessageNotReadableException exception) {
+    public ResponseEntity<ErrorResponseDTO> resolveException(HttpMessageNotReadableException exception) {
         String errorMessage = "Malformed JSON request. Please check the request body.";
-        return new ResponseEntity<>(errorMessage, HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(
+                ErrorResponseDTO.builder()
+                        .error(errorMessage)
+                        .build(),
+                 HttpStatus.BAD_REQUEST);
     }
 }
