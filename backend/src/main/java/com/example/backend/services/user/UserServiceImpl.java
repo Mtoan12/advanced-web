@@ -172,6 +172,24 @@ public class UserServiceImpl implements IUserService {
 //        return userDTO;
     }
 
+    @Override
+    public UserDTO getAuthenticatedUser(@NonNull HttpServletRequest request, @NonNull HttpServletResponse response) {
+        String authHeader = request.getHeader(HttpHeaders.AUTHORIZATION);
+        if (authHeader == null || !authHeader.startsWith(AppConstant.TOKEN_PREFIX)) {
+            throw new AuthenticationErrorException("Invalid token");
+        }
+        String token = authHeader.substring(AppConstant.TOKEN_PREFIX.length());
+        Long userID = tokenService.extractUserId(token);
+        if (userID != null ) {
+            User user = userRepository.findById(userID).orElse(null);
+            if (user != null && tokenService.isValidToken(token, user)) {
+                return userMapper.toDTO(user);
+
+            }
+        }
+        throw new AuthenticationErrorException("Invalid token");
+    }
+
     // Helper method to get null property names from an object
     private String[] getNullPropertyNames(Object source) {
         final BeanWrapper src = new BeanWrapperImpl(source);
