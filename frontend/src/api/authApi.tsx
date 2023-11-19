@@ -15,7 +15,8 @@ class AuthApi {
     return res.data;
   }
   async register(signInFields: RegisterDTO) {
-    const { email, password, firstName, lastName, dob, gender } = signInFields;
+    const { email, password, firstName, lastName, dob, gender, role } =
+      signInFields;
     const res = await instance.post("/auth/register", {
       email,
       password,
@@ -23,6 +24,7 @@ class AuthApi {
       gender,
       first_name: firstName,
       last_name: lastName,
+      role,
     });
 
     return res.data;

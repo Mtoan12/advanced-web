@@ -1,4 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
+import authApi from "@/api/authApi";
 import { createContext, useState } from "react";
 
 const testUsers: User[] = [
@@ -51,6 +52,23 @@ const AuthContextProvider = ({ children }: { children: React.ReactNode }) => {
       console.log("Login success", user);
       setLoading(false);
       return;
+    }
+  };
+
+  const register = async (registerInstance: RegisterDTO) => {
+    setLoading(true);
+    try {
+      const res = await authApi.register(registerInstance);
+      if (res?.access_token) {
+        localStorage.setItem("access-token", res.access_token);
+        localStorage.setItem("refresh-token", res.refresh_token);
+        // loadUser();
+      }
+    } catch (error: any) {
+      setError(error.message);
+      console.error(error);
+    } finally {
+      setLoading(false);
     }
   };
 
