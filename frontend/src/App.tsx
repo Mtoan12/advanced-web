@@ -31,6 +31,7 @@ function App() {
           <Route path="/sign-up" element={<SignUpPage />} />
           <Route path="/landing" element={<LandingPage />} />
           <Route path="/profile" element={<ProfilePage />} />
+          <Route path="/edit-profile" element={<ProfilePage />} />
           <Route path="*" element={<NotFoundPage />} />
         </Routes>
       </Suspense>

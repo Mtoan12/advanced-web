@@ -16,9 +16,8 @@ import {
 } from "@/components/ui/select";
 import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
-import { signUpSchema } from "@/schema/formSchema";
+import { ProfileSchema, signUpSchema } from "@/schema/formSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Edit, Eye, EyeOff } from "lucide-react";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { Link, Navigate } from "react-router-dom";
@@ -27,15 +26,13 @@ import { useAuth } from "@/hooks/useAuth";
 
 const ProfilePage = () => {
   const [isEditMode, setIsEditMode] = useState(false);
-  const form = useForm<z.infer<typeof signUpSchema>>({
-    resolver: zodResolver(signUpSchema),
+  const form = useForm<z.infer<typeof ProfileSchema>>({
+    resolver: zodResolver(ProfileSchema),
     defaultValues: {
       firstName: "",
       lastName: "",
       birthday: "",
       gender: "",
-      email: "",
-      password: "",
     },
   });
 
@@ -44,7 +41,8 @@ const ProfilePage = () => {
     <Navigate to={"/"} />;
   }
 
-  const onSubmit = (data: z.infer<typeof signUpSchema>) => {
+  const onSubmit = (data: z.infer<typeof ProfileSchema>) => {
+    saveProfile();
     console.log(data);
   };
 
@@ -54,21 +52,23 @@ const ProfilePage = () => {
 
   const saveProfile = () => {
     setIsEditMode(false);
+    console.log(isEditMode);
   };
 
   return (
     <main className="container flex max-w-[1024px] flex-col justify-center py-20">
-      <h1 className="mb-4 text-center text-4xl font-bold">Account Setting</h1>
-      <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
-          <div className="grid grid-cols-2 gap-2">
-            <FormField
-              control={form.control}
-              name="firstName"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>First name:</FormLabel>
-                  {isEditMode ? (
+      <h1 className=" text-center text-4xl font-bold">Profile</h1>
+      {isEditMode ? (
+        <Form {...form}>
+          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+            <div className="grid grid-cols-2 gap-2">
+              <FormField
+                control={form.control}
+                name="firstName"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>First name:</FormLabel>
+
                     <FormControl>
                       <Input
                         placeholder="Tran"
@@ -78,25 +78,20 @@ const ProfilePage = () => {
                             "border-red-400 focus-visible:ring-red-400",
                           "pr-8",
                         )}
-                        readOnly={!isEditMode}
                       />
                     </FormControl>
-                  ) : (
-                    <div className="rounded-md border border-gray-300 p-2">
-                      Tran
-                    </div>
-                  )}
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="lastName"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Last name:</FormLabel>
-                  {isEditMode ? (
+
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="lastName"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Last name:</FormLabel>
+
                     <FormControl>
                       <Input
                         placeholder="Last name"
@@ -106,29 +101,23 @@ const ProfilePage = () => {
                             "border-red-400 focus-visible:ring-red-400",
                           "pr-8",
                         )}
-                        readOnly={!isEditMode}
                       />
                     </FormControl>
-                  ) : (
-                    <div className="rounded-md border border-gray-300 p-2">
-                      Toan
-                    </div>
-                  )}
 
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-          </div>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </div>
 
-          <div className="grid grid-cols-2 gap-2">
-            <FormField
-              control={form.control}
-              name="birthday"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Date of birth:</FormLabel>
-                  {isEditMode ? (
+            <div className="grid grid-cols-2 gap-2">
+              <FormField
+                control={form.control}
+                name="birthday"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Date of birth:</FormLabel>
+
                     <FormControl>
                       <Input
                         placeholder="Date of birth"
@@ -141,24 +130,18 @@ const ProfilePage = () => {
                         )}
                       />
                     </FormControl>
-                  ) : (
-                    <div className="rounded-md border border-gray-300 p-2">
-                      07/13/2002
-                    </div>
-                  )}
 
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="gender"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Gender:</FormLabel>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="gender"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Gender:</FormLabel>
 
-                  {isEditMode ? (
                     <Select
                       onValueChange={field.onChange}
                       defaultValue={field.value}
@@ -179,26 +162,53 @@ const ProfilePage = () => {
                         <SelectItem value="female">Female</SelectItem>
                       </SelectContent>
                     </Select>
-                  ) : (
-                    <div className="rounded-md border border-gray-300 p-2">
-                      Male
-                    </div>
-                  )}
 
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-          </div>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </div>
 
-          <div className="flex items-center justify-between">
-            <Button onClick={setEditMode}>Edit</Button>
-            <Button type="submit" onClick={saveProfile}>
-              Save
-            </Button>
+            <div className="flex items-center justify-between">
+              <Button type="submit">Save</Button>
+            </div>
+          </form>
+        </Form>
+      ) : (
+        <div className="grid grid-cols-1 gap-1">
+          <div className="container mx-auto ">
+            <div className="mx-auto max-w-2xl rounded-md bg-white p-8 shadow-md">
+              <div className="mb-6 flex items-center space-x-4">
+                <div>
+                  <h3 className="text-xl font-semibold">
+                    Le Tran Thien Thang{" "}
+                  </h3>
+                  <p className="text-gray-500">thienthang@gmail</p>
+                </div>
+              </div>
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <h4 className="mb-2 text-lg font-semibold">Date of Birth:</h4>
+                  <p>13/7</p>
+                </div>
+                <div>
+                  <h4 className="mb-2 text-lg font-semibold">Gender:</h4>
+                  <p>male</p>
+                </div>
+              </div>
+
+              <div className="mt-8">
+                <button
+                  className="rounded-md bg-blue-500 px-4 py-2 text-white"
+                  onClick={setEditMode}
+                >
+                  Edit Profile
+                </button>
+              </div>
+            </div>
           </div>
-        </form>
-      </Form>
+        </div>
+      )}
     </main>
   );
 };
