@@ -1,65 +1,66 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/no-unused-vars */
+import authApi from "@/api/authApi";
 import { createContext, useState } from "react";
 
-const testUsers: User[] = [
-  {
-    id: 1,
-    email: "tranminhtoan1280@gmail.com",
-    first_name: "Toan",
-    last_name: "Tran",
-    birthday: new Date("1999-12-12"),
-    gender: "male",
-    password: "123456",
-  },
-  {
-    id: 2,
-    email: "tranminhtoan1281@gmail.com",
-    first_name: "Toan",
-    last_name: "Tran2",
-    birthday: new Date("1999-12-12"),
-    gender: "male",
-    password: "123456",
-  },
-];
-
-type AuthContextType = {
-  user: User | null;
-  loading: boolean;
-  error: string;
-  login: (email: string, password: string) => void;
-};
-
-export const AuthContext = createContext<AuthContextType | null>(null);
+export const AuthContext = createContext<any>(null);
 
 const AuthContextProvider = ({ children }: { children: React.ReactNode }) => {
-  const [user, setUser] = useState<User | null>({
-    id: 1,
-    email: "tranminhtoan1280@gmail.com",
-    first_name: "Toan",
-    last_name: "Tran",
-    birthday: new Date("1999-12-12"),
-    gender: "male",
-    password: "123456",
-  });
+  const [user, setUser] = useState<User | null>();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
-  const login = (email: string, password: string) => {
+  const loadUser = async () => {
     setLoading(true);
-    const user = testUsers.find((user) => user.email === email);
 
-    if (!user) {
-      setError("User not found");
-      setLoading(false);
-      return;
-    }
+    try {
+      const res = await authApi.loadUser();
 
-    if (user.email === email && user.password === password) {
-      setUser(user);
-      console.log("Login success", user);
-      setLoading(false);
-      return;
+      if (res) {
+        const { id, email, dob, first_name, last_name, gender } = res;
+        const user = {
+          id,
+          email,
+          dob: dob ? new Date(dob) : new Date("1/1/2000"),
+          firstName: first_name ?? "",
+          lastName: last_name ?? "",
+          gender: gender,
+        };
+
+        setUser(user);
+      }
+    } catch (error: any) {
+      console.error(error);
     }
+  };
+
+  const login = async ({
+    email,
+    password,
+  }: {
+    email: string;
+    password: string;
+  }) => {
+    setLoading(true);
+
+    try {
+      const res = await authApi.login({ email, password });
+
+      if (res?.access_token) {
+        localStorage.setItem("access-token", res.access_token);
+        localStorage.setItem("refresh-token", res.refresh_token);
+        loadUser();
+      }
+    } catch (error: any) {
+      setError(error.message);
+      console.error(error);
+    }
+  };
+
+  const logout = () => {
+    localStorage.removeItem("access-token");
+    localStorage.removeItem("refresh-token");
+    setUser(null);
   };
 
   const data = {
@@ -67,6 +68,8 @@ const AuthContextProvider = ({ children }: { children: React.ReactNode }) => {
     loading,
     error,
     login,
+    loadUser,
+    logout,
   };
 
   return <AuthContext.Provider value={data}>{children}</AuthContext.Provider>;
