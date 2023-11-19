@@ -58,7 +58,7 @@ public class UserServiceImpl implements IUserService {
             );
 
         } catch (Exception e) {
-            throw  new AuthenticationErrorException(e.getMessage() + " - Username or Password is incorrect");
+            throw  new AuthenticationErrorException("Username or Password is incorrect");
         }
 
         User user = userRepository.findByEmail(loginDTO.getEmail()).orElseThrow(
