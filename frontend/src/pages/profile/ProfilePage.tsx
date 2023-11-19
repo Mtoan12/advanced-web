@@ -17,7 +17,7 @@ const ProfilePage = () => {
     <main className="container flex max-w-[1024px] flex-col justify-center py-20">
       <h1 className=" text-center text-4xl font-bold">Profile</h1>
       {isEditMode ? (
-        <ProfileForm setIsEditMode={setIsEditMode} />
+        <ProfileForm user={user} setIsEditMode={setIsEditMode} />
       ) : (
         <div className="grid grid-cols-1 gap-1">
           <div className="container mx-auto ">

@@ -16,23 +16,20 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { useAuth } from "@/hooks/useAuth";
 import { cn, formatDate } from "@/lib/utils";
 import { ProfileSchema } from "@/schema/formSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import * as z from "zod";
 
 type Props = {
+  user: any;
   setIsEditMode: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
-const ProfileForm = ({ setIsEditMode }: Props) => {
+const ProfileForm = ({ setIsEditMode, user }: Props) => {
   const navigate = useNavigate();
-  const { user } = useAuth();
-  if (!user) return;
 
   const form = useForm<z.infer<typeof ProfileSchema>>({
     resolver: zodResolver(ProfileSchema),
