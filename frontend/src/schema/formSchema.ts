@@ -1,9 +1,9 @@
 import * as z from "zod";
 
 export const signUpSchema = z.object({
-  firstName: z.string().min(1, "Please enter your first name").trim(),
-  lastName: z.string().min(1, "Please enter your last name").trim(),
-  birthday: z
+  first_name: z.string().min(1, "Please enter your first name").trim(),
+  last_name: z.string().min(1, "Please enter your last name").trim(),
+  dob: z
     .string()
     .min(1, "Please enter your date of birth")
     .refine((val) => {
@@ -12,7 +12,8 @@ export const signUpSchema = z.object({
       console.log(date.getFullYear());
       return date < now && date.getFullYear() > 1900;
     }, "Please enter a valid birthday"),
-  gender: z.string().min(1, "Please enter your gender").trim(),
+  gender: z.string().min(1, "Please enter your gender").trim().toUpperCase(),
+  role: z.string().min(1, "Please enter your role").trim().toUpperCase(),
   email: z
     .string()
     .min(1, "Please enter your email")
@@ -22,7 +23,11 @@ export const signUpSchema = z.object({
     .string()
     .min(6, "Password should be 6 - 20 character long")
     .max(20, "Password should be 6 - 20 character long")
-    .trim(),
+    .trim()
+    .regex(
+      /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])[0-9a-zA-Z]{6,}$/,
+      "Only contain ASCII without special character. At least 6 characters, 1 number, 1 upper,  1 lowercase",
+    ),
 });
 
 export const signInSchema = z.object({

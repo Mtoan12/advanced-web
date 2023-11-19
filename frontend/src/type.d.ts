@@ -8,11 +8,12 @@ type User = {
   gender: "male" | "female";
 };
 
-type SignInFields = {
+type RegisterDTO = {
   firstName: string;
   lastName: string;
   dob: Date;
-  gender: 'male' | 'female';
+  gender: string | "MALE" | "FEMALE";
   email: string;
   password: string;
-}
+  role: string | "MEMBER" | "TEACHER";
+};

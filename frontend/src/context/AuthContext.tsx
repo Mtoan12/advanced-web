@@ -32,15 +32,7 @@ type AuthContextType = {
 export const AuthContext = createContext<AuthContextType | null>(null);
 
 const AuthContextProvider = ({ children }: { children: React.ReactNode }) => {
-  const [user, setUser] = useState<User | null>({
-    id: 1,
-    email: "tranminhtoan1280@gmail.com",
-    first_name: "Toan",
-    last_name: "Tran",
-    birthday: new Date("1999-12-12"),
-    gender: "male",
-    password: "123456",
-  });
+  const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
