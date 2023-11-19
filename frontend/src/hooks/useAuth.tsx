@@ -8,7 +8,7 @@ export const useAuth = () => {
     if (localStorage.getItem("access-token")) {
       context.loadUser();
     }
-  }, [context]);
+  }, []);
 
   if (!context) {
     throw new Error("useAuth must be used within an AuthProvider");
