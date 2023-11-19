@@ -1,3 +1,4 @@
+import profileApi from "@/api/profileApi";
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -21,11 +22,15 @@ import { ProfileSchema } from "@/schema/formSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
+import { useNavigate } from "react-router-dom";
 import * as z from "zod";
 
-const ProfileForm = () => {
-  const [isEditMode, setIsEditMode] = useState(false);
+type Props = {
+  setIsEditMode: React.Dispatch<React.SetStateAction<boolean>>;
+};
 
+const ProfileForm = ({ setIsEditMode }: Props) => {
+  const navigate = useNavigate();
   const { user } = useAuth();
   if (!user) return;
 
@@ -39,14 +44,25 @@ const ProfileForm = () => {
     },
   });
 
-  const onSubmit = (data: z.infer<typeof ProfileSchema>) => {
-    saveProfile();
+  const onSubmit = async (data: z.infer<typeof ProfileSchema>) => {
     console.log(data);
-  };
-  console.log(formatDate(user.dob));
-  const saveProfile = () => {
-    setIsEditMode(false);
-    console.log(isEditMode);
+    try {
+      const { birthday, firstName, gender, lastName } = data;
+
+      const res = await profileApi.updateProfile({
+        id: user.id,
+        birthday: new Date(birthday),
+        firstName,
+        gender,
+        lastName,
+      });
+      console.log(res);
+
+      setIsEditMode(false);
+      navigate(0);
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   return (

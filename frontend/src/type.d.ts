@@ -15,3 +15,11 @@ type SignInFields = {
   email: string;
   password: string;
 };
+
+type ProfileFields = {
+  id: number;
+  firstName: string;
+  lastName: string;
+  birthday: Date;
+  gender: string;
+};
