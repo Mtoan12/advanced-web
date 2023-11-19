@@ -57,12 +57,19 @@ const AuthContextProvider = ({ children }: { children: React.ReactNode }) => {
     }
   };
 
+  const logout = () => {
+    localStorage.removeItem("access-token");
+    localStorage.removeItem("refresh-token");
+    setUser(null);
+  };
+
   const data = {
     user,
     loading,
     error,
     login,
     loadUser,
+    logout,
   };
 
   return <AuthContext.Provider value={data}>{children}</AuthContext.Provider>;

@@ -13,7 +13,7 @@ import { Button } from "../ui/button";
 import { LogOut, User } from "lucide-react";
 
 const RightSideHeader = () => {
-  const { user } = useAuth();
+  const { user, logout } = useAuth();
 
   if (!user) {
     return (
@@ -72,6 +72,7 @@ const RightSideHeader = () => {
                     variant="link"
                     size={"lg"}
                     className="grid w-full grid-cols-2 gap-4 "
+                    onClick={logout}
                   >
                     <LogOut size={20} className="ml-8" />
                     <span className="mr-auto">Log out</span>
