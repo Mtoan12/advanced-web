@@ -30,10 +30,11 @@ const SignUpPage = () => {
   const form = useForm<z.infer<typeof signUpSchema>>({
     resolver: zodResolver(signUpSchema),
     defaultValues: {
-      firstName: "",
-      lastName: "",
-      birthday: "",
+      first_name: "",
+      last_name: "",
+      dob: "",
       gender: "",
+      role: "",
       email: "",
       password: "",
     },
@@ -46,6 +47,12 @@ const SignUpPage = () => {
 
   const onSubmit = (data: z.infer<typeof signUpSchema>) => {
     console.log(data);
+    const registerInstance: RegisterDTO = {
+      ...data,
+      firstName: data.first_name,
+      lastName: data.last_name,
+      dob: new Date(data.dob),
+    };
   };
 
   const toggleShowPassword = () => {
@@ -58,10 +65,40 @@ const SignUpPage = () => {
       </h1>
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+          <FormField
+            control={form.control}
+            name="role"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Role:</FormLabel>
+                <Select
+                  onValueChange={field.onChange}
+                  defaultValue={field.value}
+                >
+                  <FormControl
+                    className={cn(
+                      form.formState.errors.dob &&
+                        "border-red-400 focus-visible:ring-red-400",
+                      "pr-8",
+                    )}
+                  >
+                    <SelectTrigger>
+                      <SelectValue placeholder="Role" />
+                    </SelectTrigger>
+                  </FormControl>
+                  <SelectContent>
+                    <SelectItem value="member">Member</SelectItem>
+                    <SelectItem value="teacher">Teacher</SelectItem>
+                  </SelectContent>
+                </Select>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
           <div className="grid grid-cols-2 gap-2">
             <FormField
               control={form.control}
-              name="firstName"
+              name="first_name"
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>First name:</FormLabel>
@@ -70,7 +107,7 @@ const SignUpPage = () => {
                       placeholder="First name"
                       {...field}
                       className={cn(
-                        form.formState.errors.firstName &&
+                        form.formState.errors.first_name &&
                           "border-red-400 focus-visible:ring-red-400",
                         "pr-8",
                       )}
@@ -82,7 +119,7 @@ const SignUpPage = () => {
             />
             <FormField
               control={form.control}
-              name="lastName"
+              name="last_name"
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Last name:</FormLabel>
@@ -91,7 +128,7 @@ const SignUpPage = () => {
                       placeholder="Last name"
                       {...field}
                       className={cn(
-                        form.formState.errors.lastName &&
+                        form.formState.errors.last_name &&
                           "border-red-400 focus-visible:ring-red-400",
                         "pr-8",
                       )}
@@ -126,7 +163,7 @@ const SignUpPage = () => {
           <div className="grid grid-cols-2 gap-2">
             <FormField
               control={form.control}
-              name="birthday"
+              name="dob"
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Date of birth:</FormLabel>
@@ -136,7 +173,7 @@ const SignUpPage = () => {
                       type="date"
                       {...field}
                       className={cn(
-                        form.formState.errors.birthday &&
+                        form.formState.errors.dob &&
                           "border-red-400 focus-visible:ring-red-400",
                         "pr-8",
                       )}
@@ -158,7 +195,7 @@ const SignUpPage = () => {
                   >
                     <FormControl
                       className={cn(
-                        form.formState.errors.birthday &&
+                        form.formState.errors.dob &&
                           "border-red-400 focus-visible:ring-red-400",
                         "pr-8",
                       )}

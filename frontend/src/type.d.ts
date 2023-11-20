@@ -7,14 +7,17 @@ type User = {
   gender: "MALE" | "FEMALE";
 };
 
-type SignInFields = {
+type RegisterDTO = {
   firstName: string;
   lastName: string;
   dob: Date;
-  gender: "MALE" | "FEMALE";
+  gender: string | "MALE" | "FEMALE";
   email: string;
   password: string;
+  role: string | "MEMBER" | "TEACHER";
 };
+
+
 
 type ProfileFields = {
   id: number;
