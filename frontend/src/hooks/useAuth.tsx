@@ -5,7 +5,7 @@ export const useAuth = () => {
   const context = useContext(AuthContext);
 
   useEffect(() => {
-    if (localStorage.getItem("access-token")) {
+    if (context != null && localStorage.getItem("access-token")) {
       context.loadUser();
     }
   }, []);

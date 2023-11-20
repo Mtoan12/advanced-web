@@ -8,7 +8,8 @@ type AuthContext = {
   error: string,
   login: ({email, password} : {email: string, password:string}) => Promise<void>,
   register: (registerInstance: RegisterDTO) => Promise<void>,
-  logout: () => void
+  logout: () => void,
+  loadUser: () => Promise<void>,
 }
 
 export const AuthContext = createContext<AuthContext | null>(null);
@@ -36,6 +37,8 @@ const AuthContextProvider = ({ children }: { children: React.ReactNode }) => {
         setUser(user);
       }
     } catch (error: any) {
+      localStorage.removeItem("access-token");
+      setUser(null);
       console.error(error);
     }
   };
