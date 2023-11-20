@@ -21,7 +21,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Eye, EyeOff } from "lucide-react";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
-import { Link, Navigate } from "react-router-dom";
+import {Link, Navigate, useNavigate} from "react-router-dom";
 import * as z from "zod";
 import { useAuth } from "@/hooks/useAuth";
 
@@ -39,13 +39,15 @@ const SignUpPage = () => {
       password: "",
     },
   });
+  const navigate = useNavigate();
 
-  const { user } = useAuth();
+  const { user, register, error, loading } = useAuth();
   if (user) {
     <Navigate to={"/"} />;
   }
 
   const onSubmit = (data: z.infer<typeof signUpSchema>) => {
+      console.log("data");
     console.log(data);
     const registerInstance: RegisterDTO = {
       ...data,
@@ -53,6 +55,12 @@ const SignUpPage = () => {
       lastName: data.last_name,
       dob: new Date(data.dob),
     };
+    try {
+        register(registerInstance);
+        navigate("/");
+    } catch (error) {
+        console.error(error);
+    }
   };
 
   const toggleShowPassword = () => {
@@ -244,6 +252,7 @@ const SignUpPage = () => {
               </FormItem>
             )}
           />
+            {error && <div className="text-red-500">{error}</div>}
           <div className="flex items-center justify-between">
             <Link
               className="rounded-md border-[1px] border-gray-300 px-3 py-2 text-sm transition-all duration-150 hover:bg-blue-100/20"
@@ -251,7 +260,7 @@ const SignUpPage = () => {
             >
               Had an account
             </Link>
-            <Button type="submit">Sign up</Button>
+            <Button type="submit" disabled={loading}>Sign up</Button>
           </div>
         </form>
       </Form>

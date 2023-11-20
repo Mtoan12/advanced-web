@@ -69,7 +69,7 @@ const AuthContextProvider = ({ children }: { children: React.ReactNode }) => {
       if (res?.access_token) {
         localStorage.setItem("access-token", res.access_token);
         localStorage.setItem("refresh-token", res.refresh_token);
-        // loadUser();
+        loadUser();
       }
     } catch (error: any) {
       setError(error.message);
