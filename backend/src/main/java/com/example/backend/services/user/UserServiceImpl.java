@@ -156,6 +156,7 @@ public class UserServiceImpl implements IUserService {
         return optionalUser.map(existingUser -> {
             // Use BeanUtils to copy non-null properties from DTO to entity
             BeanUtils.copyProperties(userDTO, existingUser, getNullPropertyNames(userDTO));
+            existingUser.setGender(userDTO.getGender() == null ? "UNKNOWN" : userDTO.getGender().name());
 
             // Save the updated user
             return userMapper.toDTO(userRepository.save(existingUser));
