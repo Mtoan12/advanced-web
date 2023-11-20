@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/users")
 @RequiredArgsConstructor
-@CrossOrigin(origins = "*")
 public class UserController {
 
     private final IUserService userService;
@@ -25,5 +24,7 @@ public class UserController {
     public ResponseEntity<UserDTO> updateProfile(@RequestBody UserDTO userDTO) {
         return ResponseEntity.ok(userService.updateProfile(userDTO));
     }
+
+
 
 }
