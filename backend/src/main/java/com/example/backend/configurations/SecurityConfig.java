@@ -35,7 +35,7 @@ public class SecurityConfig {
     List<RequestMatcher> permitAllMatchers = new ArrayList<>();
 
     permitAllMatchers.add(new AntPathRequestMatcher(AppConstant.AUTHENTICATION_PATH));
-//    permitAllMatchers.add(new AntPathRequestMatcher(AppConstant.USER_PATH));
+    permitAllMatchers.add(new AntPathRequestMatcher(AppConstant.USER_PATH));
 
     return permitAllMatchers;
 }
@@ -47,7 +47,6 @@ public class SecurityConfig {
                 .httpBasic(Customizer.withDefaults())
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(permitAllRequestMatchers().toArray(new RequestMatcher[0])).permitAll()
-                        .requestMatchers(AppConstant.USER_PATH).authenticated()
                         .anyRequest().authenticated())
 //                .exceptionHandling(exceptions -> exceptions.authenticationEntryPoint(unauthorizedHandler))
                 .sessionManagement(sess -> sess.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
