@@ -2,10 +2,19 @@
 import authApi from "@/api/authApi";
 import { createContext, useState } from "react";
 
-export const AuthContext = createContext<any>(null);
+type AuthContext = {
+  user: User | null,
+  loading: boolean,
+  error: string,
+  login: ({email, password} : {email: string, password:string}) => Promise<void>,
+  register: (registerInstance: RegisterDTO) => Promise<void>,
+  logout: () => void
+}
+
+export const AuthContext = createContext<AuthContext | null>(null);
 
 const AuthContextProvider = ({ children }: { children: React.ReactNode }) => {
-  const [user, setUser] = useState<User | null>();
+  const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 

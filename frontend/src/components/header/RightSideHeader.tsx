@@ -15,6 +15,7 @@ import { LogOut, User } from "lucide-react";
 const RightSideHeader = () => {
   const { user, logout } = useAuth();
   const navigate = useNavigate();
+  // console.log(user);
   if (!user) {
     return (
       <Button variant="ghost">
@@ -35,13 +36,13 @@ const RightSideHeader = () => {
           <NavigationMenuTrigger>
             <div className="flex items-center gap-2">
               <h3>
-                {user.first_name && user.last_name
+                {user.firstName && user.lastName
                   ? `
-            ${user.first_name} ${user.last_name}
+            ${user.firstName} ${user.lastName}
           `
                   : "Chưa đặt tên"}
               </h3>
-              {user.first_name && user.last_name && (
+              {user.firstName && user.lastName && (
                 <Avatar className="relative h-8 w-8">
                   <AvatarImage
                     className="absolute z-0"
